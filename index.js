@@ -1,8 +1,10 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const morgan = require('morgan')
 
 app.use(bodyParser.json())
+app.use(morgan('tiny'))
 
 let persons = [
   {
@@ -53,7 +55,7 @@ app.post('/api/persons', (request, response) => {
       error: 'missing name'
     })
   }
-  
+
   if (body.number === undefined) {
     return response.status(400).json({
       error: 'missing number'
