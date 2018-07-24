@@ -1,17 +1,40 @@
+
+### Get info
 GET http://localhost:3001/info
 
-###
-
+### Get all persons
 GET http://localhost:3001/api/persons
 
-###
-
+### Get person with id=2
 GET http://localhost:3001/api/persons/2
 
-###
-
+### Get person with id=555 (should not exists)
 GET http://localhost:3001/api/persons/555
 
-###
-
+### Delete person with id=2
 DELETE http://localhost:3001/api/persons/2
+
+### Create new person (missing name, should fail)
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+  "number": "040-123456"
+}
+
+### Create new person (missing number, should fail)
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+  "name": "Teppo Testaaja"
+}
+
+### Create new person
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+  "name": "Teppo Testaaja",
+  "number": "040-123456"
+}
