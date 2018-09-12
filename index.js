@@ -26,13 +26,19 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id )
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+  Person
+    .findById(request.params.id)
+    .then(person => {
+      if (person) {
+        response.json(Person.format(person))
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(400).send({ error: 'malformatted id' })
+    })
 })
 
 app.post('/api/persons', (request, response) => {
@@ -103,9 +109,16 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-  response.write('puhelinluettelossa ' + persons.length + ' henkilön tiedot<br/><br/>' + Date())
-  response.end();
+  Person
+    .find({})
+    .then(result => {
+      response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      response.write('puhelinluettelossa ' + result.length + ' henkilön tiedot<br/><br/>' + Date())
+      response.end();
+    })
+    .catch(error => {
+      response.status(400).send({ error: 'Error querying database' })
+    })
 })
 
 const PORT = process.env.PORT || 3001
