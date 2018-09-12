@@ -56,25 +56,28 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-//  const index = persons.findIndex(person => person.name === body.name)
-//  if (index !== -1) {
-//    return response.status(400).json({
-//      error: 'name must be unique'
-//    })
-//  }
-
-  const person = new Person({
-    name: body.name,
-    number: body.number
-  })
-
-  person
-    .save()
-    .then(savedPerson => {
-      response.json(Person.format(savedPerson))
-    })
-    .catch(error => {
-      console.log(error)
+  Person
+    .find({ name: body.name })
+    .then(result => { 
+      if (result.length > 0) {
+        return response.status(400).json({
+          error: 'name must be unique'
+        })
+      } else {
+        const person = new Person({
+          name: body.name,
+          number: body.number
+        })
+      
+        person
+          .save()
+          .then(savedPerson => {
+            response.json(Person.format(savedPerson))
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
     })
 })
 
