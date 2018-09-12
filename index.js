@@ -35,10 +35,6 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 
-const generateId = () => {
-  return parseInt(Math.random() * 1000)
-}
-
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
@@ -73,6 +69,25 @@ app.post('/api/persons', (request, response) => {
     })
     .catch(error => {
       console.log(error)
+    })
+})
+
+app.put('/api/persons/:id', (request, response) => {
+  const body = request.body
+
+  const person = {
+    name: body.name,
+    number: body.number
+  }
+
+  Person
+    .findByIdAndUpdate(request.params.id, person, { new: true } )
+    .then(updatePerson => {
+      response.json(Person.format(updatePerson))
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(400).send({ error: 'malformatted id' })
     })
 })
 
