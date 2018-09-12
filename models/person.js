@@ -7,9 +7,19 @@ const dburl = config.database.url;
 // Connect to mongodb
 mongoose.connect(dburl, { useNewUrlParser: true })
 
-const Person = mongoose.model('Person', {
+const personSchema = new mongoose.Schema({
   name: String,
   number: String
 })
+
+personSchema.statics.format = function(cb) {
+  return {
+    name: cb.name,
+    number: cb.number,
+    id: cb._id
+  }
+}
+
+const Person = mongoose.model('Person', personSchema)
 
 module.exports = Person
