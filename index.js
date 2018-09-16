@@ -58,7 +58,7 @@ app.post('/api/persons', (request, response) => {
 
   Person
     .find({ name: body.name })
-    .then(result => { 
+    .then(result => {
       if (result.length > 0) {
         return response.status(400).json({
           error: 'name must be unique'
@@ -68,7 +68,7 @@ app.post('/api/persons', (request, response) => {
           name: body.name,
           number: body.number
         })
-      
+
         person
           .save()
           .then(savedPerson => {
