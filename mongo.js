@@ -1,8 +1,10 @@
 const mongoose = require('mongoose')
-const config = require('./config')
 
-// Get database url from config file
-const dburl = config.database.url;
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
+const dburl = process.env.MONGODB_URI
 
 // Connect to mongodb
 mongoose.connect(dburl, { useNewUrlParser: true })
